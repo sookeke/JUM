@@ -4,9 +4,9 @@ RUN mkdir -p /usr/config
 WORKDIR /usr/config
 COPY . /usr/config
 
-# Make sure GIT has the following permissions set..
-RUN chmod +x ./entrypoint.sh
-RUN chmod +x ./setup.sh
+# Make sure GIT has the following permissions set.
+#RUN chmod +x ./entrypoint.sh
+#RUN chmod +x ./setup.sh
 ENTRYPOINT ["./entrypoint.sh"]
 
 
