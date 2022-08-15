@@ -45,7 +45,7 @@ parameters:
     value: "Developer"
   - name: MSSQL_SA_PASSWORD
     displayName: "Microsoft SQL Server Password"
-    description: "Microsoft SQL Server sa passwordd"
+    description: "Microsoft SQL Server sa password"
     from: '[\w]{5}_[\w]{15}_1aB!'
     generate: expression
   - name: MSSQL_PORT
