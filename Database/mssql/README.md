@@ -15,7 +15,7 @@ database:
   volumes:
     - api-db-data:/var/opt/mssql
   networks:
-    - pims
+    - jum
 ```
 
 ## MSSQL Environment Variables
@@ -31,7 +31,7 @@ MSSQL_SA_PASSWORD={password}
 MSSQL_PID=Developer
 TZ=America/Los_Angeles
 
-DB_NAME=pims
+DB_NAME=jum
 DB_USER=admin
 DB_PASSWORD={password}
 ```
