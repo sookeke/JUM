@@ -24,7 +24,7 @@ parameters:
     displayName: "OpenShift Project Namespace"
     description: "The namespace of the OpenShift project containing the application."
     required: true
-    value: "e27db1"
+    value: "e84410"
   - name: ENV_NAME
     displayName: "Environment name"
     description: "The name for this environment [dev, test, prod, tools]"
@@ -51,7 +51,7 @@ parameters:
     displayName: "Microsoft SQL Server Image"
     description: "The s2i image which is used to host the database."
     required: true
-    value: "mssql-rhel-server"
+    value: "jum"
   - name: MSSQL_IMAGE_TAG
     displayName: "Microsoft SQL Server Image tag"
     description: "The s2i image which is used to host the database."
