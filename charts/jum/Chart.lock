@@ -1,0 +1,9 @@
+dependencies:
+- name: backend
+  repository: file://../backend
+  version: 0.1.0
+- name: notification
+  repository: file://../notification
+  version: 0.1.0
+digest: sha256:a3f47187118ed2d7d4a273303e6cc4b65f29d4917cd21354417a3c28437b12d4
+generated: "2022-09-05T15:02:48.0249302-07:00"
