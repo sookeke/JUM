@@ -88,6 +88,53 @@ namespace jumwebapi.Data.Migrations
                     b.HasKey("AgencyId");
 
                     b.ToTable("JustinAgency");
+
+                    b.HasData(
+                        new
+                        {
+                            AgencyId = 1L,
+                            AgencyCode = "SPD",
+                            Created = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "",
+                            Modified = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Name = "Sannich Police Department"
+                        },
+                        new
+                        {
+                            AgencyId = 2L,
+                            AgencyCode = "VICPD",
+                            Created = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "",
+                            Modified = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Name = "Victoria Police Department"
+                        },
+                        new
+                        {
+                            AgencyId = 3L,
+                            AgencyCode = "DPD",
+                            Created = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "",
+                            Modified = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Name = "Delta Police Department"
+                        },
+                        new
+                        {
+                            AgencyId = 4L,
+                            AgencyCode = "VPD",
+                            Created = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "",
+                            Modified = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Name = "Vancouver Police Department"
+                        },
+                        new
+                        {
+                            AgencyId = 5L,
+                            AgencyCode = "RCMP",
+                            Created = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "",
+                            Modified = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Name = "Royal Canada Mount Police"
+                        });
                 });
 
             modelBuilder.Entity("jumwebapi.Data.ef.JustinAgencyAssignment", b =>

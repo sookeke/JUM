@@ -6,6 +6,7 @@ using jumwebapi.Infrastructure.Auth;
 using jumwebapi.Infrastructure.HttpClients.Keycloak;
 using jumwebapi.Infrastructure.HttpClients.Mail;
 using jumwebapi.Extensions;
+using jumwebapi.Infrastructure.HttpClients.JustinParticipant;
 
 public static class HttpClientSetup
 {
@@ -33,7 +34,7 @@ public static class HttpClientSetup
                 ClientSecret = config.Keycloak.AdministrationClientSecret
             });
 
-        //services.AddHttpClientWithBaseAddress<IPlrClient, PlrClient>(config.PlrClient.Url);
+        services.AddHttpClientWithBaseAddress<IJustinParticipantClient, JustinParticipantClient>(config.JustinParticipantClient.Url);
 
         services.AddTransient<ISmtpEmailClient, SmtpEmailClient>();
 

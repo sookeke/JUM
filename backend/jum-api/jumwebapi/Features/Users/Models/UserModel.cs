@@ -6,7 +6,6 @@ namespace jumwebapi.Features.Users.Models;
 #nullable disable
 public class UserModel
 {
-    public long UserId { get; set; }
     public string UserName { get; set; } = string.Empty;
     public bool IsDisable { get; set; }
     public long ParticipantId { get; set; }

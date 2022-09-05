@@ -12,7 +12,6 @@ using FluentValidation;
 namespace jumwebapi.Features.Users.Commands;
 
 public sealed record CreateUserCommand(
-    long UserId,
     string UserName,
     long ParticipantId,
    // Guid DigitalIdentifier,

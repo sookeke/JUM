@@ -22,4 +22,5 @@ public class PartyTypeController : ControllerBase
     {
         return await _mediator.Send(new GetAllPartyTypeQuery());
     }
+    
 }

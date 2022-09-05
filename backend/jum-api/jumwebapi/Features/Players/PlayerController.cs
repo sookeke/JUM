@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace jumwebapi.Features.Players
 {
-    //[HasPermission(Permissions.AdminUsers)]
+    [HasPermission(Permissions.AdminUsers)]
     [Route("api/[controller]")]
     [ApiController]
     public class PlayerController : ControllerBase

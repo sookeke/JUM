@@ -13,7 +13,6 @@ public class UserMap : IRegister
     public void Register(TypeAdapterConfig config)
     {
         config.NewConfig<JustinUser, CreateUserCommand>()
-            .Map(src => src.UserId, dest => dest.UserId)
             .Map(src => src.UserName, dest => dest.UserName)
             .Map(src => src.IsDisable, dest => dest.IsDisabled)
             .Map(src => src.ParticipantId, dest => dest.ParticipantId)
@@ -31,7 +30,6 @@ public class UserMap : IRegister
             .Map(src => src.Roles, dest => dest.UserRoles.Select(r=>r.Role).ToArray()); 
 
         config.NewConfig<CreateUserCommand, JustinUser>()
-            .Map(dest => dest.UserId, src => src.UserId)
             .Map(dest => dest.UserName, src => src.UserName)
             .Map(dest => dest.IsDisabled, src => src.IsDisable)
             .Map(dest => dest.ParticipantId, src => src.ParticipantId)

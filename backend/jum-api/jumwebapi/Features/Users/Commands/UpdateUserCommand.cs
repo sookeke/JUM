@@ -9,7 +9,7 @@ using MediatR;
 namespace jumwebapi.Features.Users.Commands;
 
 
-public sealed record UpdateUserCommand(long UserId,
+public sealed record UpdateUserCommand(
     string UserName,
     long ParticipantId,
     // Guid DigitalIdentifier,

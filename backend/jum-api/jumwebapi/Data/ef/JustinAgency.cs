@@ -1,4 +1,5 @@
 ﻿using jumwebapi.Models;
+using jumwebapi.Models.Lookups;
 
 namespace jumwebapi.Data.ef;
 
@@ -15,4 +16,15 @@ public class JustinAgency : BaseAuditable
     public virtual ICollection<JustinUser> Users { get; set; } = new List<JustinUser>();    
     public ICollection<JustinAgencyAssignment> AgencyAssignments { get; set; } = new List<JustinAgencyAssignment>();    
   
+}
+public class AgencyDataGenerator : ILookupDataGenerator<JustinAgency>
+{
+    public IEnumerable<JustinAgency> Generate() => new[]
+    {
+                new JustinAgency {AgencyId = 1, Name = "Sannich Police Department", AgencyCode = "SPD"},
+                 new JustinAgency {AgencyId = 2, Name = "Victoria Police Department", AgencyCode = "VICPD"},
+                  new JustinAgency {AgencyId = 3, Name = "Delta Police Department", AgencyCode = "DPD"},
+                   new JustinAgency {AgencyId = 4, Name = "Vancouver Police Department", AgencyCode = "VPD"},
+                    new JustinAgency {AgencyId = 5, Name = "Royal Canada Mount Police", AgencyCode = "RCMP"},
+    };
 }

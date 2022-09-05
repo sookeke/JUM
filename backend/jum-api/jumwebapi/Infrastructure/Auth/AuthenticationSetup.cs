@@ -1,5 +1,9 @@
-﻿using jumwebapi.Extensions;
+﻿using Confluent.Kafka;
+using jumwebapi.Extensions;
+using jumwebapi.Kafka.Producer;
+using jumwebapi.Kafka.Producer.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
@@ -14,6 +18,20 @@ namespace jumwebapi.Infrastructure.Auth
             //Configuration = configuration;
             services.ThrowIfNull(nameof(services));
             config.ThrowIfNull(nameof(config));
+
+            var producerConfig = new ProducerConfig
+            {
+                BootstrapServers = config.KafkaCluster.BoostrapServers,
+                Acks = Acks.All,               
+                SaslMechanism = SaslMechanism.Plain,
+                SecurityProtocol = SecurityProtocol.SaslSsl,
+                SaslUsername = config.KafkaCluster.ClientId,
+                SaslPassword = config.KafkaCluster.ClientSecret,
+                EnableIdempotence = true
+            };
+
+            services.AddSingleton(producerConfig);
+            services.AddSingleton(typeof(IKafkaProducer<,>), typeof(KafkaProducer<,>));
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
@@ -70,12 +88,27 @@ namespace jumwebapi.Infrastructure.Auth
                     OnChallenge = context =>
                     {
                         context.HandleResponse();
-                        return Task.CompletedTask;
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        context.Response.ContentType = "application/json";
+
+                        if (string.IsNullOrEmpty(context.Error))
+                            context.Error = "invalid_token";
+                        if (string.IsNullOrEmpty(context.ErrorDescription))
+                            context.ErrorDescription = "This request requires a valid JWT access token to be provided";
+
+                        return context.Response.WriteAsync(JsonConvert.SerializeObject(new
+                        {
+                            error = context.Error,
+                            error_description = context.ErrorDescription
+                        }));
                     }
                 };
             });
             services.AddAuthorization(options =>
             {
+                options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
                 options.AddPolicy("Administrator", policy => policy.Requirements.Add(new RealmAccessRoleRequirement("administrator")));
             });
             return services;

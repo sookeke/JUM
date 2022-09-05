@@ -13,3 +13,6 @@ public class AgencyConfiguration : IEntityTypeConfiguration<JustinAgency>
             .HasForeignKey(a => a.AgencyId);
     }
 }
+public class AgencyLoadConfiguration : LookupTableConfiguration<JustinAgency, AgencyDataGenerator>
+{
+}

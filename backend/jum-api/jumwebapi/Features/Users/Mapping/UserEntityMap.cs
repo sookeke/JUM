@@ -8,7 +8,6 @@ public class UserEntityMap : IRegister
     public void Register(TypeAdapterConfig config)
     {
         config.NewConfig<JustinUser, UserModel>()
-         .Map(dest => dest.UserId, src => src.UserId)
          .Map(dest => dest.UserName, src => src.UserName)
          .Map(dest => dest.IsDisable, src => src.IsDisabled)
          .Map(dest => dest.ParticipantId, src => src.ParticipantId)
@@ -25,7 +24,6 @@ public class UserEntityMap : IRegister
          .Map(dest => dest.Roles, src => src.UserRoles.Select(r => r.Role));
 
         config.NewConfig<UserModel, JustinUser>()
-           .Map(dest => dest.UserId, src => src.UserId)
            .Map(dest => dest.UserName, src => src.UserName)
            .Map(dest => dest.IsDisabled, src => src.IsDisable)
            .Map(dest => dest.ParticipantId, src => src.ParticipantId)

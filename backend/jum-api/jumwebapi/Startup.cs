@@ -33,7 +33,6 @@ using jumwebapi.Features.Users.Services;
 using jumwebapi.Infrastructure.HttpClients;
 using jumwebapi.Data.Seed;
 using jumwebapi.Helpers.Mapping;
-using jumwebapi.Data.Exceptions;
 
 namespace jumwebapi;
 public class Startup
@@ -88,8 +87,6 @@ public class Startup
             .UseSqlServer(config.ConnectionStrings.JumDatabase, sql => sql.UseNodaTime())
             .EnableSensitiveDataLogging(sensitiveDataLoggingEnabled: false));
 
-        
-
         services.AddMediatR(typeof(Startup).Assembly);
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
         //services.AddFluentValidation(new[] { typeof(UpdatePlayerCommandHandler).GetTypeInfo().Assembly });
@@ -104,6 +101,7 @@ public class Startup
         services.AddScoped<IProxyRequestClient, ProxyRequestClient>();
         services.AddScoped<IdentityProviderDataSeeder>();
         //services.AddScoped<IOpenIdConnectRequestClient, OpenIdConnectRequestClient>();
+
 
         services.AddHealthChecks()
             .AddCheck("liveliness", () => HealthCheckResult.Healthy())
