@@ -51,8 +51,13 @@ public class KafkaConsumer<TKey, TValue> : IKafkaConsumer<TKey, TValue> where TV
                 var result = _consumer.Consume(cancellationToken);
                 if (result != null)
                 {
-                    await _handler.HandleAsync(_consumer.Name, result.Message.Key, result.Message.Value);
-                    _consumer.Commit(result);
+                  var consumerResult =  await _handler.HandleAsync(_consumer.Name, result.Message.Key, result.Message.Value);
+
+                    if (consumerResult.Status == TaskStatus.RanToCompletion && consumerResult.Exception == null)
+                    {
+                        _consumer.Commit(result);
+                    }
+                    
                 }
             }
             catch (OperationCanceledException)

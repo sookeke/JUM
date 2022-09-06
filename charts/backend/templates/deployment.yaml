@@ -58,6 +58,31 @@ spec:
                 configMapKeyRef:
                   name: jum-api-database
                   key: CONNECTION_STRINGS_JUM
+            - name: KafkaCluster__BoostrapServers
+              valueFrom:
+                secretKeyRef:
+                  name: kafkaconfig
+                  key: KafkaCluster__BoostrapServers
+            - name: KafkaCluster__TopicName
+              valueFrom:
+                secretKeyRef:
+                  name: kafkaconfig
+                  key: KafkaCluster__TopicName
+            - name: KafkaCluster__AckTopicName
+              valueFrom:
+                secretKeyRef:
+                  name: kafkaconfig
+                  key: KafkaCluster__AckTopicName
+            - name: KafkaCluster__ClientId
+              valueFrom:
+                secretKeyRef:
+                  name: kafkaconfig
+                  key: KafkaCluster__ClientId
+            - name: KafkaCluster__ClientSecret
+              valueFrom:
+                secretKeyRef:
+                  name: kafkaconfig
+                  key: KafkaCluster__ClientSecret
             - name: ApplicationUrl
               value: "https://{{ if $isProd }}{{else}}{{ $release }}.{{end}}{{ $domain }}"
           envFrom:

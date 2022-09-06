@@ -70,12 +70,14 @@ public class UserProvisioningHandler : IKafkaHandler<string, UserProvisioningMod
                 });
 
 
+                await trx.CommitAsync();
 
+                return Task.CompletedTask;
             }
-            await trx.CommitAsync();
+
         }
 
-        return Task.CompletedTask;
+        return Task.FromException(new ApplicationException());
     }
     private async Task<Guid?> SendConfirmationEmailAsync(string partyEmail,string firstName, string username)
     {
