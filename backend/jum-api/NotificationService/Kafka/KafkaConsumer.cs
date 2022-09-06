@@ -44,7 +44,6 @@ public class KafkaConsumer<TKey, TValue> : IKafkaConsumer<TKey, TValue> where TV
     private async Task StartConsumerLoop(CancellationToken cancellationToken)
     {
         _consumer.Subscribe(_topic);
-
         while (!cancellationToken.IsCancellationRequested)
         {
             try

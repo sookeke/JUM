@@ -53,7 +53,7 @@ spec:
               value: admin
             - name: DATABASE
               value: JumDB
-            - name: ConnectionStrings__jumDatabase
+            - name: ConnectionStrings__JumDatabase
               valueFrom:
                 configMapKeyRef:
                   name: jum-api-database
@@ -67,27 +67,29 @@ spec:
                 name: ches
             - configMapRef:
                 name: mail-settings
+            - secretRef:
+                name: kafkaconfig
           ports:
             - name: http
               containerPort: 8080
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /health/liveness
-              port: http
-            timeoutSeconds: 1
-            periodSeconds: 10
-            successThreshold: 1
-            failureThreshold: 3
-          startupProbe:
-            httpGet:
-              path: /health/liveness
-              port: http
-              scheme: HTTP
-            timeoutSeconds: 1
-            periodSeconds: 10
-            successThreshold: 1
-            failureThreshold: 30
+        #  livenessProbe:
+         #   httpGet:
+        #      path: /health/liveness
+        #      port: http
+         #   timeoutSeconds: 1
+        #    periodSeconds: 10
+         #   successThreshold: 1
+         #   failureThreshold: 3
+         # startupProbe:
+        #    httpGet:
+         #     path: /health/liveness
+         #     port: http
+          #    scheme: HTTP
+         #   timeoutSeconds: 1
+         #   periodSeconds: 10
+          #  successThreshold: 1
+          #  failureThreshold: 30
           # readinessProbe:
           #   httpGet:
           #     path: /

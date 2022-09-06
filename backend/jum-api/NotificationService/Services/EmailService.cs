@@ -39,7 +39,7 @@ public class EmailService : IEmailService
     {
         if (!NotificationServiceConfiguration.IsProduction())
         {
-            email.Subject = $"User Account Provisioning Event: {email.Subject}";
+            email.Subject = $"{email.Subject}";
         }
 
         if (this.config.ChesClient.Enabled && await this.chesClient.HealthCheckAsync())

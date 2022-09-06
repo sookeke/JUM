@@ -81,27 +81,15 @@ public class UserProvisioningHandler : IKafkaHandler<string, UserProvisioningMod
     {
         // TODO email text
 
-        string msgBody = string.Format(@"<html xmlns='http://www.w3.org/1999/xhtml'>
-                        < head >
-                            < title ></ title >
-                        </ head >
-                        < body >
-                            < img src = 'http://www.aspsnippets.com/images/Blue/Logo.png'/>< br />
-                            < br />
-                            < div style = 'border-top: 3px solid #22BCE5' >
-                                &nbsp;</ div >
-                            < span style = 'font-family: Arial; font-size: 10pt' > Hello<b>{0}</ b >,< br />
-                                < br />
-                                Your Justin user account has been provisioned.< br />
-                                < br />
-                                < a style = 'color: #22BCE5' href = '{1}' >{2}</ a >< br />
-                                You can Log in to the JIPD Portal with your IDIR {3} to Continue your onboarding into the Digital Evidence Management System using the above link.
-                                < br />
-                                < br />
-                                Thanks < br />
-                                Justin User Management </ span >
-                        </ body >
-                        </ html >", firstName, "http://localhost:9090/", "User Provisioning", username);
+        string msgBody = string.Format(@"<html>
+            <head>
+                <title>Justin User Account Provisiong</title>
+            </head>
+                <body> 
+                <img src='https://drive.google.com/uc?export=view&id=16JU6XoVz5FvFUXXWCN10JvN-9EEeuEmr'width='' height='50'/><br/><br/><div style='border-top: 3px solid #22BCE5'><span style = 'font-family: Arial; font-size: 10pt' ><br/> Hello {0},<br/><br/> Your Justin user account has been provisioned.<br/><br/>
+                You can Log in to the <a href='{1}'> JIPD Portal </a> with your IDIR <b>{2}</b> to continue your onboarding into the Digital Evidence Management System by clicking on the above link. <br/><br/> Thanks <br/> Justin User Management.
+                </span></div></body></html> ", 
+    firstName, "https://dev.pidp-e27db1-dev.apps.gold.devops.gov.bc.ca/", username);
         var email = new Email(
             from: EmailService.NotificationServiceEmail,
             to: partyEmail,
