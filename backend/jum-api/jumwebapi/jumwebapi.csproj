@@ -17,6 +17,10 @@
     <NoWarn>1701;1702;8602;8600;8630;8603;</NoWarn>
   </PropertyGroup>
 
+   <PropertyGroup>
+     <InvariantGlobalization>false</InvariantGlobalization>
+   </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />

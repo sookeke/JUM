@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: cicd-pipeline
+  name: jum-cicd-pipeline
   namespace: e27db1-tools
 spec:
   params:
@@ -20,7 +20,7 @@ spec:
     - name: release_version
       default: "v0.1.0"
     - name: values_file
-      default: chart/jum/values.yaml
+      default: charts/jum/values.yaml
   workspaces:
     - name: source
   tasks:
@@ -38,7 +38,7 @@ spec:
         - name: sslVerify
           value: 'true'
         - name: subdirectory
-          value: jps-pidp
+          value: jps-jum
         - name: deleteExisting
           value: 'true'
         - name: verbose
@@ -62,9 +62,9 @@ spec:
         - name: IMAGE
           value: $(params.image-registry)/jum-api:$(params.image-tag)
         - name: CONTEXT
-          value: JUM/backend/jum-api/jumwebapi/
+          value: jps-jum/backend/jum-api/jumwebapi/
         - name: DOCKERFILE
-          value: JUM/backend/jum-api/jumwebapi/Dockerfile
+          value: jps-jum/backend/jum-api/jumwebapi/Dockerfile
         - name: EXTRA_ARGS
           value: 
             - --skip-tls-verify
@@ -81,9 +81,9 @@ spec:
         - name: IMAGE
           value: $(params.image-registry)/notification-api:$(params.image-tag)
         - name: CONTEXT
-          value: JUM/backend/jum-api/NotificationService/
+          value: jps-jum/backend/jum-api/NotificationService/
         - name: DOCKERFILE
-          value: JUM/backend/jum-api/NotificationService/Dockerfile
+          value: jps-jum/backend/jum-api/NotificationService/Dockerfile
         - name: EXTRA_ARGS
           value: 
             - --skip-tls-verify
@@ -95,7 +95,7 @@ spec:
           workspace: source
       params:
       - name: charts_dir
-        value: ./JUM/charts/jum
+        value: ./jps-jum/charts/jum
       - name: release_version
         value: $(params.release_version)
       - name: release_name
@@ -105,11 +105,10 @@ spec:
       - name: overwrite_values
         value: global.image.tag=$(params.image-tag),global.commit_sha=$(params.git-short-sha)
       - name: values_file
-        value: JUM/$(params.values_file)
+        value: jps-jum/$(params.values_file)
       taskRef:
         name: helm-upgrade-from-source
       runAfter: 
         - git-clone
-        - build-plr-intake
-        - build-frontend-image
-        - build-webapi
+        - build-notification-service
+        - build-jumapi
