@@ -55,7 +55,7 @@ public static class ConsumerSetup
 
         //services.AddSingleton(consumerConfig);
 
-        services.AddScoped<IKafkaHandler<string, UserProvisioningModel>, UserProvisioningHandler>();
+        services.AddScoped<IKafkaHandler<string, Notification>, UserProvisioningHandler>();
         services.AddSingleton(typeof(IKafkaConsumer<,>), typeof(KafkaConsumer<,>));
         services.AddHostedService<NotificationServiceConsumer>();
 

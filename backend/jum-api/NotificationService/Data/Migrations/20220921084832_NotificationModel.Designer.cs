@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NotificationService.Data;
 
@@ -11,9 +12,10 @@ using NotificationService.Data;
 namespace NotificationService.Data.Migrations
 {
     [DbContext(typeof(NotificationDbContext))]
-    partial class NotificationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220921084832_NotificationModel")]
+    partial class NotificationModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,14 +98,11 @@ namespace NotificationService.Data.Migrations
 
             modelBuilder.Entity("NotificationService.NotificationEvents.UserProvisioning.Models.NotificationAckModel", b =>
                 {
-                    b.Property<Guid>("NotificationId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("NotificationId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EmailAddress")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessRequestId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Consumer")
                         .IsRequired()

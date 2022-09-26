@@ -29,6 +29,8 @@ public class NotificationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasDefaultSchema("notification");
+
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<IdempotentConsumer>()

@@ -5,9 +5,9 @@ using System.Net;
 namespace NotificationService.NotificationEvents.UserProvisioning;
 public class NotificationServiceConsumer : BackgroundService
 {
-	private readonly IKafkaConsumer<string, UserProvisioningModel> _consumer;
+	private readonly IKafkaConsumer<string, Notification> _consumer;
 	private readonly NotificationServiceConfiguration _config;
-	public NotificationServiceConsumer(IKafkaConsumer<string, UserProvisioningModel> kafkaConsumer, NotificationServiceConfiguration config)
+	public NotificationServiceConsumer(IKafkaConsumer<string, Notification> kafkaConsumer, NotificationServiceConfiguration config)
 	{
 		_consumer = kafkaConsumer;
 		_config = config;

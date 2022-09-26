@@ -68,7 +68,7 @@ spec:
             - configMapRef:
                 name: mail-settings
             - secretRef:
-                name: kafkaconfig
+                name: kafkaconfig-notification
           ports:
             - name: http
               containerPort: 8080

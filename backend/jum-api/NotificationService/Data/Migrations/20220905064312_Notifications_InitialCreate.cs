@@ -49,7 +49,7 @@ namespace NotificationService.Data.Migrations
                 name: "Notifications",
                 columns: table => new
                 {
-                    NotificationId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    NotificationId = table.Column<string>(type: "uniqueidentifier", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PartId = table.Column<long>(type: "bigint", nullable: false),
                     EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),

@@ -13,6 +13,7 @@ public class EmailLog : BaseAuditable
     public string SendType { get; set; } = string.Empty;
 
     public Guid? MsgId { get; set; }
+    public string Tag { get; set; } = String.Empty;
 
     public string SentTo { get; set; } = string.Empty;
 
@@ -32,7 +33,7 @@ public class EmailLog : BaseAuditable
 
     public EmailLog() { }
 
-    public EmailLog(Email email, string sendType, Guid? msgId, Instant dateSent)
+    public EmailLog(Email email, string sendType, Guid? msgId, string? tag, Instant dateSent)
     {
         this.Body = email.Body;
         this.Cc = string.Join(",", email.Cc);
@@ -41,5 +42,6 @@ public class EmailLog : BaseAuditable
         this.SendType = sendType;
         this.SentTo = string.Join(",", email.To);
         this.Subject = email.Subject;
+        this.Tag = tag;
     }
 }
