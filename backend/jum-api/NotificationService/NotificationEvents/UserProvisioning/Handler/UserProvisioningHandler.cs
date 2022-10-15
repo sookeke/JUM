@@ -56,10 +56,10 @@ public class UserProvisioningHandler : IKafkaHandler<string, Notification>
         try
         {
             //new notification? check message status
-            if (emailLogs != null && emailLogs.Count == 1 && emailLogs[0].MsgId!.Value != Guid.Empty)
+            if (emailLogs != null && emailLogs.Count == 1 && emailLogs.FirstOrDefault()!.MsgId!.Value != Guid.Empty)
             {
-                var emailLog = emailLogs[0];
-                var status = await this.chesClient.GetStatusAsync(emailLog.MsgId!.Value);
+                var emailLog = emailLogs.FirstOrDefault();
+                var status = await this.chesClient.GetStatusAsync(emailLog!.MsgId!.Value);
 
                 if (status != null && emailLog.LatestStatus != status)
                 {

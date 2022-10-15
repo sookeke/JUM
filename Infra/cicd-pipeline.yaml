@@ -7,7 +7,7 @@ spec:
   params:
     - name: git-url
     - name: git-revision
-      default: develop
+      default: master
     - name: git-short-sha
     - name: image-registry
       default: image-registry.openshift-image-registry.svc:5000/e27db1-tools
