@@ -1,4 +1,4 @@
-FROM mssql-rhel-server:2019-latest
+FROM mcr.microsoft.com/mssql/rhel/server:2019-latest
 RUN mkdir -p /usr/config
 WORKDIR /usr/config
 COPY . /usr/config
