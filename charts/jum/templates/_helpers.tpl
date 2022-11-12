@@ -50,13 +50,3 @@ app.kubernetes.io/name: {{ include "jum.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "jum.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "jum.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}

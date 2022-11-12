@@ -12,6 +12,7 @@ namespace jumwebapi.Features.Participants.Controllers;
 public class ParticipantController : ControllerBase
 {
     private readonly IMediator _mediator;
+
     public ParticipantController(IMediator mediator)
     {
         _mediator = mediator;

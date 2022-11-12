@@ -35,22 +35,25 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "backend.serviceAccountName" . }}
+      serviceAccountName: {{ .Values.global.licenseplate }}-vault
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.global.image.registry }}/{{ .Values.image.repository }}:{{ .Values.global.image.tag | default .Chart.AppVersion }}"
+          image: {{ .Values.global.image.registry }}/{{ .Values.image.repository }}:{{ .Values.global.image.tag | default .Chart.AppVersion }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: DB_HOST
               value: jum-database
             - name: SA_PASSWORD
-              value:
+              valueFrom:
+                secretKeyRef:
+                  name: jum-db-jum-database-secret
+                  key: sapassword
             - name: SA_USER
-              value: admin
+              value: sa
             - name: DATABASE
               value: JumDB
             - name: ConnectionStrings__JumDatabase
@@ -61,27 +64,27 @@ spec:
             - name: KafkaCluster__BoostrapServers
               valueFrom:
                 secretKeyRef:
-                  name: kafkaconfig
+                  name: jum-kafka-config
                   key: KafkaCluster__BoostrapServers
             - name: KafkaCluster__TopicName
               valueFrom:
                 secretKeyRef:
-                  name: kafkaconfig
+                  name: jum-kafka-config
                   key: KafkaCluster__TopicName
             - name: KafkaCluster__AckTopicName
               valueFrom:
                 secretKeyRef:
-                  name: kafkaconfig
+                  name: jum-kafka-config
                   key: KafkaCluster__AckTopicName
             - name: KafkaCluster__ClientId
               valueFrom:
                 secretKeyRef:
-                  name: kafkaconfig
+                  name: jum-kafka-config
                   key: KafkaCluster__ClientId
             - name: KafkaCluster__ClientSecret
               valueFrom:
                 secretKeyRef:
-                  name: kafkaconfig
+                  name: jum-kafka-config
                   key: KafkaCluster__ClientSecret
             - name: ApplicationUrl
               value: "https://{{ if $isProd }}{{else}}{{ $release }}.{{end}}{{ $domain }}"
@@ -93,7 +96,7 @@ spec:
             - configMapRef:
                 name: mail-settings
             - secretRef:
-                name: kafkaconfig
+                name: kafka-config
           ports:
             - name: http
               containerPort: 8080

@@ -48,7 +48,7 @@ public class UsersController : ControllerBase
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetUser(long partId)
+    public async Task<IActionResult> GetUser(decimal partId)
     {
         var user = await _mediator.Send(new GetUserByPartId(partId));
         return new JsonResult(user);

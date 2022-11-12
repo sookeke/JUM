@@ -20,15 +20,18 @@ spec:
       containers:
       - name: migrations
         image: {{ .Values.global.image.registry }}/{{ .Values.image.repository }}:{{ .Values.global.image.tag | default .Chart.AppVersion }}
-        imagePullPolicy: Always
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         command: ['./efbundle', '--connection', '$(ConnectionStrings__jumDatabase)']
         env:
           - name: DB_HOST
             value: jum-database
           - name: POSTGRESQL_PASSWORD
-            value: 
+            valueFrom:
+              secretKeyRef:
+                name: jum-db-jum-database-secret
+                key: sapassword
           - name: POSTGRESQL_USER
-            value: admin
+            value: sa
           - name: POSTGRESQL_DATABASE
             value: JumDB
           - name: DOTNET_BUNDLE_EXTRACT_BASE_DIR

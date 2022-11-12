@@ -5,6 +5,7 @@
 global:
   vanityURL: "jum-api-e27db1-dev.apps.gold.devops.gov.bc.ca"
   commit_sha: ""
+  licenseplate: e27db1-tools
   image:
     registry: image-registry.openshift-image-registry.svc:5000/e27db1-tools
     tag: develop
@@ -28,12 +29,12 @@ migrations:
   
 serviceAccount:
   # Specifies whether a service account should be created
-  create: true
+  create: false
   # Annotations to add to the service account
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: ""
+  name: "default"
 
 podAnnotations: {}
 
