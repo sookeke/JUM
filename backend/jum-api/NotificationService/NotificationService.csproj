@@ -53,6 +53,8 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="Features\DataGeneration\Controllers\" />
+    <Folder Include="Features\TemplateGeneration\" />
   </ItemGroup>
 
 </Project>
