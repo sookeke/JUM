@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NodaTime;
+using NotificationService.Features.DataGeneration.Model;
 using NotificationService.NotificationEvents.UserProvisioning.Models;
 
 namespace NotificationService.Data;
@@ -12,6 +13,7 @@ public class NotificationDbContext : DbContext
     public DbSet<EmailLog> EmailLogs { get; set; } = default!;
     public DbSet<IdempotentConsumer> IdempotentConsumers { get; set; } = default!;
     public DbSet<NotificationAckModel> Notifications { get; set; } = default!;
+    public DbSet<TemplateGenerator> TemplateGenerators { get; set; } = default!;
 
     public override int SaveChanges()
     {
@@ -40,6 +42,10 @@ public class NotificationDbContext : DbContext
         modelBuilder.Entity<NotificationAckModel>()
             .ToTable("Notifications")
             .HasKey(x => new { x.NotificationId, x.EmailAddress });
+
+        modelBuilder.Entity<TemplateGenerator>()
+            .ToTable("TemplateGenerator")
+            .HasKey(x => new { x.TemplateName, x.Type });
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(NotificationDbContext).Assembly);
     }

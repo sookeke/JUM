@@ -1,4 +1,5 @@
-﻿using NotificationService.NotificationEvents.UserProvisioning.Models;
+﻿using NodaTime;
+using NotificationService.NotificationEvents.UserProvisioning.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

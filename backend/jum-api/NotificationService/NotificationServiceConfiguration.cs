@@ -16,6 +16,14 @@ public class NotificationServiceConfiguration
         public string BoostrapServers { get; set; } = string.Empty;
         public string TopicName { get; set; } = string.Empty;
         public string AckTopicName { get; set; } = string.Empty;
+        public string SaslOauthbearerTokenEndpointUrl { get; set; } = string.Empty;
+        public string SaslOauthbearerProducerClientId { get; set; } = string.Empty;
+        public string SaslOauthbearerProducerClientSecret { get; set; } = string.Empty;
+        public string SaslOauthbearerConsumerClientId { get; set; } = string.Empty;
+        public string SaslOauthbearerConsumerClientSecret { get; set; } = string.Empty;
+        public string SslCaLocation { get; set; } = string.Empty;
+        public string SslCertificateLocation { get; set; } = string.Empty;
+        public string SslKeyLocation { get; set; } = string.Empty;
     }
     public class ConnectionStringConfiguration
     {
