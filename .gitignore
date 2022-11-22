@@ -363,3 +363,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/backend/jum-api/jumwebapi/.nuget/aspnetcore.healthchecks.sqlserver/6.0.2
+/backend/jum-api/jumwebapi/.nuget
+/.idea
+/.vscode

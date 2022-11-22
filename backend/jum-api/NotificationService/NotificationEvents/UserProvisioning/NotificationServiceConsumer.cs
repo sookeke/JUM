@@ -1,5 +1,6 @@
 ﻿using NotificationService.Kafka.Interfaces;
 using NotificationService.NotificationEvents.UserProvisioning.Models;
+using Serilog;
 using System.Net;
 
 namespace NotificationService.NotificationEvents.UserProvisioning;
@@ -16,6 +17,7 @@ public class NotificationServiceConsumer : BackgroundService
 	{
 		try
 		{
+			Log.Logger.Information("### Starting consumer from {0}", _config.KafkaCluster.TopicName);
 			await _consumer.Consume(_config.KafkaCluster.TopicName, stoppingToken);
 		}
 		catch (Exception ex)

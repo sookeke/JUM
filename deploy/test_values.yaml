@@ -1,0 +1,14 @@
+global:
+  vanityURL: "jum-e27db1-test.apps.gold.devops.gov.bc.ca"
+  commit_sha: ""
+  image:
+    tag: build-test
+  environment: test
+  licenseplate: e27db1
+
+notification:
+  image:
+    repository: jum-notification
+    pullPolicy: Always
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "build-test"
