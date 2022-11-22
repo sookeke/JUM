@@ -100,7 +100,7 @@ public class UserService : IUserService
             .FirstOrDefaultAsync(u => u.UserName == userName) ?? throw new KeyNotFoundException($"username {userName} not found");
     }
 
-    public async Task<JustinUser> GetUserByPartId(long partId)
+    public async Task<JustinUser> GetUserByPartId(decimal partId)
     {
         return await _context.Users
             .Include(p => p.Person)

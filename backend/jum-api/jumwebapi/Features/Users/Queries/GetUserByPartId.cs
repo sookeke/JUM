@@ -4,7 +4,7 @@ using MediatR;
 
 namespace jumwebapi.Features.Users.Queries;
 
-public sealed record GetUserByPartId(long partId) : IRequest<JustinUser>;
+public sealed record GetUserByPartId(decimal partId) : IRequest<JustinUser>;
 public class GetUserByPartIdHandler : IRequestHandler<GetUserByPartId, JustinUser>
 {
     private readonly IUserService _userService;
