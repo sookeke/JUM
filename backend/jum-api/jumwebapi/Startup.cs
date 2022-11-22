@@ -104,8 +104,8 @@ public class Startup
 
 
         services.AddHealthChecks()
-            .AddCheck("liveliness", () => HealthCheckResult.Healthy())
-            .AddSqlServer(config.ConnectionStrings.JumDatabase, tags: new[] { "services" });
+            .AddCheck("liveliness", () => HealthCheckResult.Healthy());
+            //.AddSqlServer(config.ConnectionStrings.JumDatabase, tags: new[] { "services" });
 
         services.AddApiVersioning(options =>
         {

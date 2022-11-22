@@ -12,22 +12,29 @@ namespace jumwebapi.Infrastructure.Auth
 {
     public static class AuthenticationSetup
     {
-        //public IConfiguration Configuration { get; }
         public static IServiceCollection AddKeycloakAuth(this IServiceCollection services, jumwebapiConfiguration config)
         {
-            //Configuration = configuration;
             services.ThrowIfNull(nameof(services));
             config.ThrowIfNull(nameof(config));
 
             var producerConfig = new ProducerConfig
             {
-                BootstrapServers = config.KafkaCluster.BoostrapServers,
-                Acks = Acks.All,               
-                SaslMechanism = SaslMechanism.Plain,
+                BootstrapServers = config.KafkaCluster.BootstrapServers,
+                Acks = Acks.All,
+                SaslMechanism = SaslMechanism.OAuthBearer,
                 SecurityProtocol = SecurityProtocol.SaslSsl,
-                SaslUsername = config.KafkaCluster.ClientId,
-                SaslPassword = config.KafkaCluster.ClientSecret,
-                EnableIdempotence = true
+                SaslOauthbearerTokenEndpointUrl = config.KafkaCluster.SaslOauthbearerTokenEndpointUrl,
+                SaslOauthbearerMethod = SaslOauthbearerMethod.Oidc,
+                SaslOauthbearerScope = config.KafkaCluster.Scope,
+                SslEndpointIdentificationAlgorithm = SslEndpointIdentificationAlgorithm.Https,
+                SslCaLocation = config.KafkaCluster.SslCaLocation,
+                SaslOauthbearerClientId = config.KafkaCluster.SaslOauthbearerProducerClientId,
+                SaslOauthbearerClientSecret = config.KafkaCluster.SaslOauthbearerProducerClientSecret,
+                SslCertificateLocation = config.KafkaCluster.SslCertificateLocation,
+                SslKeyLocation = config.KafkaCluster.SslKeyLocation,
+                EnableIdempotence = true,
+                RetryBackoffMs = 1000,
+                MessageSendMaxRetries = 3
             };
 
             services.AddSingleton(producerConfig);

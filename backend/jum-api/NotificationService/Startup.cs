@@ -98,7 +98,9 @@ public class Startup
         services.AddSingleton(config);
 
         Log.Logger.Information("### App Version:{0} ###", Assembly.GetExecutingAssembly().GetName().Version);
-        Log.Logger.Information("### Noticification Service Configuration:{0} ###", JsonSerializer.Serialize(config));
+        Log.Logger.Information("### X Notification Service Configuration:{0} ###", JsonSerializer.Serialize(config));
+
+
 
         return config;
     }

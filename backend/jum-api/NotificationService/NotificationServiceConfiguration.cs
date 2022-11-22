@@ -10,12 +10,14 @@ public class NotificationServiceConfiguration
 
     public class KafkaClusterConfiguration
     {
+
         public string Url { get; set; } = string.Empty;
         public string ClientId { get; set; } = string.Empty;
         public string ClientSecret { get; set; } = string.Empty;
-        public string BoostrapServers { get; set; } = string.Empty;
+        public string BootstrapServers { get; set; } = string.Empty;
         public string TopicName { get; set; } = string.Empty;
         public string AckTopicName { get; set; } = string.Empty;
+        public string NotificationTopic { get; set; } = string.Empty;   
         public string SaslOauthbearerTokenEndpointUrl { get; set; } = string.Empty;
         public string SaslOauthbearerProducerClientId { get; set; } = string.Empty;
         public string SaslOauthbearerProducerClientSecret { get; set; } = string.Empty;
@@ -24,6 +26,10 @@ public class NotificationServiceConfiguration
         public string SslCaLocation { get; set; } = string.Empty;
         public string SslCertificateLocation { get; set; } = string.Empty;
         public string SslKeyLocation { get; set; } = string.Empty;
+        public string Scope { get; set; } = "openid";
+        public string ConsumerGroupId { get; set; } = "jum-notification-consumer-group";
+
+
     }
     public class ConnectionStringConfiguration
     {

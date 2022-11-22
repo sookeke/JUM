@@ -29,6 +29,8 @@ ENV \
      LANG=en_US.UTF-8
  RUN apk add --no-cache icu-libs
 
+COPY certs /app/certs
+
 COPY --from=build-env /app .
 COPY --from=build-env /source/efbundle .
 
