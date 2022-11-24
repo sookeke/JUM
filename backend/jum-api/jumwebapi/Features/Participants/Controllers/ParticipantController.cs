@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using jumwebapi.Features.Participants.Queries;
+using Serilog;
+using System.Text.Json;
 
 namespace jumwebapi.Features.Participants.Controllers;
 
@@ -24,7 +26,10 @@ public class ParticipantController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ParticipantByUsername([Required]string username)
     {
+        Log.Logger.Information("Getting participant info for {0}", username);
         var participant = await _mediator.Send(new GetParticipantByUsernameQuery(username));
+        Log.Logger.Information("Got {0}", JsonSerializer.Serialize(participant));
+
         return new JsonResult(participant);
     }
     [HttpGet("{partId:decimal}")]
