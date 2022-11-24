@@ -15,6 +15,7 @@ metadata:
   labels:
     {{- include "notification.labels" . | nindent 4 }}
 spec:
+  ttlSecondsAfterFinished: 60
   template:
     spec:
       containers:
