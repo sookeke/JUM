@@ -135,7 +135,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
-        - name: truststore
+        - name: kafka-truststore
           secret:
             secretName: kafka-cluster-client-truststore
         - name: truststore-key

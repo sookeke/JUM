@@ -1,0 +1,17 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: pidp-jum-api
+  namespace: e27db1-test
+spec:
+  host: pidp-jum.jum-api-e27db1-test.apps.gold.devops.gov.bc.ca
+  to:
+    kind: Service
+    name: pidp-jum-backend
+    weight: 100
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: None
+  wildcardPolicy: None

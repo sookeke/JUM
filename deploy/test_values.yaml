@@ -14,5 +14,10 @@ notification:
     tag: "build-test"
 
 backend:
-  route:
-    enabled: true
+  ingress:
+    enabled: false
+    hosts:
+      - host: jum-api-e27db1-test.apps.gold.devops.gov.bc.ca
+        paths:
+        - path: /
+          pathType: ImplementationSpecific

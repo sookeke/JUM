@@ -15,7 +15,7 @@ metadata:
   labels:
     {{- include "backend.labels" . | nindent 4 }}
 spec:
-  ttlSecondsAfterFinished: 120
+  ttlSecondsAfterFinished: 30
   template:
     spec:
       containers:

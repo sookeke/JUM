@@ -88,6 +88,10 @@ spec:
                   key: KafkaCluster__ClientSecret
             - name: ApplicationUrl
               value: "https://{{ if $isProd }}{{else}}{{ $release }}.{{end}}{{ $domain }}"
+          volumeMounts:
+            - name: kafka-truststore
+              mountPath: "/opt/kafka/certificates"
+              readOnly: true          
           envFrom:
             - secretRef:
                 name: keycloak-secrets
@@ -137,7 +141,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
-        - name: truststore
+        - name: kafka-truststore
           secret:
             secretName: kafka-cluster-client-truststore
         - name: truststore-key
