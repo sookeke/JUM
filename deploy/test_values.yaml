@@ -1,5 +1,5 @@
 global:
-  vanityURL: "jum-e27db1-test.apps.gold.devops.gov.bc.ca"
+  vanityURL: "jum-api-e27db1-test.apps.gold.devops.gov.bc.ca/api"
   commit_sha: ""
   image:
     tag: build-test
