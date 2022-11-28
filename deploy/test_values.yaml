@@ -15,4 +15,4 @@ notification:
 
 backend:
   route:
-    enabled: true
+    enabled: false
