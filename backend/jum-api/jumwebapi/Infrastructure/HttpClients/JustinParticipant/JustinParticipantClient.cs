@@ -12,6 +12,7 @@ namespace jumwebapi.Infrastructure.HttpClients.JustinParticipant
 
             if (!result.IsSuccess)
             {
+                this.Logger.LogJustinQueryFailure(string.Join(",",result.Errors));
                 return null;
             }
             var participants = result.Value;
@@ -63,4 +64,6 @@ public static partial class JustinParticipantClientLoggingExtensions
     public static partial void LogDisabledPartIdFound(this ILogger logger, decimal partId);
     [LoggerMessage(5, LogLevel.Error, "Justin user not found.")]
     public static partial void LogJustinUserNotFound(this ILogger logger);
+    [LoggerMessage(6, LogLevel.Error, "Failed to query JUSTIN system [{errors}]")]
+    public static partial void LogJustinQueryFailure(this ILogger logger,string errors);
 }
