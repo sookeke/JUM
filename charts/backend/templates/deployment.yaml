@@ -82,12 +82,13 @@ spec:
                 secretKeyRef:
                   name: jum-kafka-config
                   key: KafkaCluster__AckTopicName
-              valueFrom:
-                secretKeyRef:
-                  name: jum-kafka-config
-                  key: KafkaCluster__ClientSecret
             - name: ApplicationUrl
               value: "https://{{ if $isProd }}{{else}}{{ $release }}.{{end}}{{ $domain }}"
+            - name: JustinParticipantClient__Url
+              valueFrom:
+                secretKeyRef:
+                  name: jum-api-config
+                  key: url
           volumeMounts:
             - name: kafka-truststore
               mountPath: "/opt/kafka/certificates"
