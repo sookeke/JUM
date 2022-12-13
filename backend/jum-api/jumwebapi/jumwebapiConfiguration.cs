@@ -57,6 +57,7 @@ public class jumwebapiConfiguration
     public class JustinParticipantClientConfiguration
     {
         public string Url { get; set; } = string.Empty;
+        public string ApiKey { get;  set;   } = string.Empty;   
     }
     public class KeycloakConfiguration
     {

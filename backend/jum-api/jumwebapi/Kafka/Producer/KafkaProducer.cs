@@ -18,6 +18,7 @@ public class KafkaProducer<TKey, TValue> : IDisposable, IKafkaProducer<TKey, TVa
     }
     public async Task ProduceAsync(string topic, TKey key, TValue value)
     {
+        Log.Logger.Information("Adding notification entry {0} on topic {1}", key, topic);
         await _producer.ProduceAsync(topic, new Message<TKey, TValue> { Key = key, Value = value });
     }
     public void Dispose()

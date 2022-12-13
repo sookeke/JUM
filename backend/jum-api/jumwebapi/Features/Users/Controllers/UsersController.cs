@@ -63,6 +63,7 @@ public class UsersController : ControllerBase
             user.AgencyId, user.PartyTypeCode, user.Roles         
             ));
 
+        // place a message on the notification topic
         await _kafkaProducer.ProduceAsync(_config.KafkaCluster.TopicName, user.ParticipantId.ToString(), entity);
         return Ok(entity);
     }

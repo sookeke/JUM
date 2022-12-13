@@ -14,8 +14,6 @@ public static class HttpClientSetup
     {
         services.AddHttpClient<IAccessTokenClient, AccessTokenClient>();
 
-        //services.AddHttpClientWithBaseAddress<IAddressAutocompleteClient, AddressAutocompleteClient>(config.AddressAutocompleteClient.Url);
-
         services.AddHttpClientWithBaseAddress<IChesClient, ChesClient>(config.ChesClient.Url)
             .WithBearerToken(new ChesClientCredentials
             {
@@ -23,8 +21,6 @@ public static class HttpClientSetup
                 ClientId = config.ChesClient.ClientId,
                 ClientSecret = config.ChesClient.ClientSecret
             });
-
-        //services.AddHttpClientWithBaseAddress<ILdapClient, LdapClient>(config.LdapClient.Url);
 
         services.AddHttpClientWithBaseAddress<IKeycloakAdministrationClient, KeycloakAdministrationClient>(config.Keycloak.AdministrationUrl)
             .WithBearerToken(new KeycloakAdministrationClientCredentials
@@ -34,7 +30,14 @@ public static class HttpClientSetup
                 ClientSecret = config.Keycloak.AdministrationClientSecret
             });
 
-        services.AddHttpClientWithBaseAddress<IJustinParticipantClient, JustinParticipantClient>(config.JustinParticipantClient.Url);
+        if (string.IsNullOrEmpty(config.JustinParticipantClient.ApiKey))
+        {
+            services.AddHttpClientWithBaseAddress<IJustinParticipantClient, JustinParticipantClient>(config.JustinParticipantClient.Url);
+        } else
+        {
+            services.AddHttpClientWithBaseAddress<IJustinParticipantClient, JustinParticipantClient>(config.JustinParticipantClient.Url)
+                .ConfigureHttpClient(client => client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", config.JustinParticipantClient.ApiKey));
+        }
 
         services.AddTransient<ISmtpEmailClient, SmtpEmailClient>();
 

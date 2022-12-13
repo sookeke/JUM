@@ -62,12 +62,17 @@ spec:
               value: sa
             - name: DATABASE
               value: JumDB
+            - name: KafkaCluster__SaslOauthbearerTokenEndpointUrl
+              valueFrom:
+                secretKeyRef:
+                  name: jum-kafka-config
+                  key: KafkaCluster__SaslOauthbearerTokenEndpointUrl
             - name: ConnectionStrings__JumDatabase
               valueFrom:
                 configMapKeyRef:
                   name: jum-api-database
                   key: CONNECTION_STRINGS_JUM
-            - name: KafkaCluster__BoostrapServers
+            - name: KafkaCluster__BootstrapServers
               valueFrom:
                 secretKeyRef:
                   name: jum-kafka-config
@@ -83,12 +88,20 @@ spec:
                   name: jum-kafka-config
                   key: KafkaCluster__AckTopicName
             - name: ApplicationUrl
-              value: "https://{{ if $isProd }}{{else}}{{ $release }}.{{end}}{{ $domain }}"
+              value: "https://{{ $domain }}"
             - name: JustinParticipantClient__Url
               valueFrom:
                 secretKeyRef:
                   name: jum-api-config
                   key: url
+            {{- if .Values.justinSecured }}
+            - name: JustinParticipantClient__ApiKey
+              valueFrom:
+                secretKeyRef:
+                  name: jum-api-config
+                  key: apikey
+            {{- end }}
+
           volumeMounts:
             - name: kafka-truststore
               mountPath: "/opt/kafka/certificates"
