@@ -7,6 +7,7 @@ using jumwebapi.Infrastructure.HttpClients.Keycloak;
 using jumwebapi.Infrastructure.HttpClients.Mail;
 using jumwebapi.Extensions;
 using jumwebapi.Infrastructure.HttpClients.JustinParticipant;
+using System.Text;
 
 public static class HttpClientSetup
 {
@@ -30,13 +31,25 @@ public static class HttpClientSetup
                 ClientSecret = config.Keycloak.AdministrationClientSecret
             });
 
-        if (string.IsNullOrEmpty(config.JustinParticipantClient.ApiKey))
+        if (!string.IsNullOrEmpty(config.JustinParticipantClient.ApiKey))
         {
+            Serilog.Log.Logger.Information("JUSTIN Client configured with bearer token");
+            services.AddHttpClientWithBaseAddress<IJustinParticipantClient, JustinParticipantClient>(config.JustinParticipantClient.Url).ConfigureHttpClient(client => client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", config.JustinParticipantClient.ApiKey));
+
+        } 
+        else if (!(string.IsNullOrEmpty(config.JustinParticipantClient.BasicAuthUsername) && string.IsNullOrEmpty(config.JustinParticipantClient.BasicAuthPassword)))
+        {
+            Serilog.Log.Logger.Information("JUSTIN Client configured with basic auth");
+            string username = config.JustinParticipantClient.BasicAuthUsername;
+            string password = config.JustinParticipantClient.BasicAuthPassword;
+            string svcCredentials = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes(username + ":" + password));
+            services.AddHttpClientWithBaseAddress<IJustinParticipantClient, JustinParticipantClient>(config.JustinParticipantClient.Url).ConfigureHttpClient(client => client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", svcCredentials));
+
+        }
+        else
+        {
+            Serilog.Log.Logger.Warning("JUSTIN Client configured with no authentication");
             services.AddHttpClientWithBaseAddress<IJustinParticipantClient, JustinParticipantClient>(config.JustinParticipantClient.Url);
-        } else
-        {
-            services.AddHttpClientWithBaseAddress<IJustinParticipantClient, JustinParticipantClient>(config.JustinParticipantClient.Url)
-                .ConfigureHttpClient(client => client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", config.JustinParticipantClient.ApiKey));
         }
 
         services.AddTransient<ISmtpEmailClient, SmtpEmailClient>();
