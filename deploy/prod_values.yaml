@@ -2,21 +2,18 @@ global:
   vanityURL: "jum-api-e27db1-prod.apps.gold.devops.gov.bc.ca"
   commit_sha: ""
   image:
-    tag: develop
+    tag: main
   environment: prod
   licenseplate: e27db1
-
-
 
 notification:
   image:
     repository: jum-notification
     pullPolicy: Always
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "develop"
+    tag: "main"
 
 backend:
   justinSecured: true
-
   route:
     enabled: true

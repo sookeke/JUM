@@ -14,5 +14,6 @@ notification:
     tag: "develop"
 
 backend:
+  justinSecured: true
   route:
     enabled: true
