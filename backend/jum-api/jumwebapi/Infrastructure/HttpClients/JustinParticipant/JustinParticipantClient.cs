@@ -1,4 +1,5 @@
-﻿using jumwebapi.Features.Participants.Models;
+﻿using System.Diagnostics;
+using jumwebapi.Features.Participants.Models;
 
 namespace jumwebapi.Infrastructure.HttpClients.JustinParticipant
 {
@@ -9,6 +10,9 @@ namespace jumwebapi.Infrastructure.HttpClients.JustinParticipant
         public async Task<Participant> GetParticipantByUserName(string username, string accessToken)
         {
             var result = await this.GetAsync<Party>($"?user_id={username}", accessToken);
+
+            Activity.Current?.AddTag("digitalevidence.justin.user", username);
+
 
             if (!result.IsSuccess)
             {
@@ -26,11 +30,15 @@ namespace jumwebapi.Infrastructure.HttpClients.JustinParticipant
                 this.Logger.LogDisabledUserFound(username);
                 return null;
             }
+
             return participants.participant;
         }
 
         public async Task<Participant> GetParticipantPartId(decimal partId, string accessToken)
         {
+
+            Activity.Current?.AddTag("digitalevidence.party.id", partId);
+
             var result = await this.GetAsync<Party>($"?part_id={partId}", accessToken);
 
             if (!result.IsSuccess)

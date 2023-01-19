@@ -13,12 +13,23 @@ public class jumwebapiConfiguration
     public KeycloakConfiguration Keycloak { get; set; } = new();
     public MailServerConfiguration MailServer { get; set; } = new();
 
+    public TelemeteryConfiguration Telemetry { get; set; } = new TelemeteryConfiguration();
+
+
     // ------- Configuration Objects -------
 
     public class AddressAutocompleteClientConfiguration
     {
         public string ApiKey { get; set; } = string.Empty;
         public string Url { get; set; } = string.Empty;
+    }
+
+    public class TelemeteryConfiguration
+    {
+        public string CollectorUrl { get; set; } = string.Empty;
+        public string AzureConnectionString { get; set; } = string.Empty;
+        public bool LogToConsole { get; set; }
+
     }
 
     public class ConnectionStringConfiguration

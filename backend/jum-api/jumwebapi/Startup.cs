@@ -33,6 +33,16 @@ using jumwebapi.Features.Users.Services;
 using jumwebapi.Infrastructure.HttpClients;
 using jumwebapi.Data.Seed;
 using jumwebapi.Helpers.Mapping;
+using jumwebapi.Infrastructure.Telemetry;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+using OpenTelemetry;
+using OpenTelemetry.Exporter;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using Google.Protobuf.WellKnownTypes;
+using Azure.Monitor.OpenTelemetry.Exporter;
+using Microsoft.IdentityModel.Tokens;
 
 namespace jumwebapi;
 public class Startup
@@ -43,7 +53,56 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         var config = this.InitializeConfiguration(services);
-       // var jsonSerializerOptions = this.Configuration.GenerateJsonSerializerOptions();
+        // var jsonSerializerOptions = this.Configuration.GenerateJsonSerializerOptions();
+
+
+        if (!string.IsNullOrEmpty(config.Telemetry.CollectorUrl))
+        {
+
+
+            Action<ResourceBuilder> configureResource = r => r.AddService(
+                 serviceName: TelemetryConstants.ServiceName,
+                 serviceVersion: Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "unknown",
+                 serviceInstanceId: Environment.MachineName);
+
+            Log.Logger.Information("Telemetry logging is enabled {0}", config.Telemetry.CollectorUrl);
+            var resource = ResourceBuilder.CreateDefault().AddService(TelemetryConstants.ServiceName);
+
+            services.AddOpenTelemetry()
+               .ConfigureResource(configureResource)
+               .WithTracing(builder =>
+               {
+                   builder.SetSampler(new AlwaysOnSampler())
+                       .AddHttpClientInstrumentation()
+                       .AddEntityFrameworkCoreInstrumentation(options => options.SetDbStatementForText = true)
+                       .AddAspNetCoreInstrumentation();
+
+                   if (config.Telemetry.LogToConsole)
+                   {
+                       builder.AddConsoleExporter();
+                   }
+                   if (!string.IsNullOrEmpty(config.Telemetry.AzureConnectionString))
+                   {
+                       Log.Information("*** Azure trace exporter enabled ***");
+                       builder.AddAzureMonitorTraceExporter(o => o.ConnectionString = config.Telemetry.AzureConnectionString);
+                   }
+                   if (!string.IsNullOrEmpty(config.Telemetry.CollectorUrl))
+                   {
+                       builder.AddOtlpExporter(options =>
+                       {
+                           Log.Information("*** OpenTelemetry trace exporter enabled ***");
+
+                           options.Endpoint = new Uri(config.Telemetry.CollectorUrl);
+                           options.Protocol = OtlpExportProtocol.HttpProtobuf;
+                       });
+                   }
+               })
+               .WithMetrics(builder =>
+                   builder.AddHttpClientInstrumentation()
+                       .AddAspNetCoreInstrumentation()).StartWithHost();
+
+        }
+
         services
           .AddAutoMapper(typeof(Startup))
           .AddHttpClients(config)
@@ -147,6 +206,7 @@ public class Startup
         });
         services.AddFluentValidationRulesToSwagger();
 
+
     }
     private jumwebapiConfiguration InitializeConfiguration(IServiceCollection services)
     {
@@ -186,7 +246,7 @@ public class Startup
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
-            // endpoints.MapHealthChecks("/health");
+            endpoints.MapHealthChecks("/health");
         });
 
     }
