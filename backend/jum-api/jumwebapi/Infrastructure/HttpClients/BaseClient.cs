@@ -131,10 +131,11 @@ public class BaseClient
                     ? await response.Content.ReadAsStringAsync(cancellationToken)
                     : "";
 
+
                 this.Logger.LogNonSuccessStatusCode(response.StatusCode, responseMessage);
                 return DomainResult.Failed<T>(response.StatusCode == HttpStatusCode.NotFound
                     ? $"The URL {url} was not found"
-                    : "Did not receive a successful status code");
+                    : $"Did not receive a successful status code from {url}");
             }
 
             if (ignoreResponseContent)
