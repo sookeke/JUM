@@ -22,7 +22,7 @@ public class NotificationServiceConsumer : BackgroundService
 		}
 		catch (Exception ex)
 		{
-			Console.WriteLine($"{(int)HttpStatusCode.InternalServerError} ConsumeFailedOnTopic - {_config.KafkaCluster.TopicName}, {ex}");
+            Log.Logger.Error($"{(int)HttpStatusCode.InternalServerError} ConsumeFailedOnTopic - {_config.KafkaCluster.TopicName}, {ex}");
 		}
 	}
 

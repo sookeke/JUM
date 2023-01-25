@@ -1,16 +1,19 @@
 ﻿using System.Diagnostics;
 using jumwebapi.Features.Participants.Models;
+using Prometheus;
 
 namespace jumwebapi.Infrastructure.HttpClients.JustinParticipant
 {
     public class JustinParticipantClient : BaseClient, IJustinParticipantClient
     {
         public JustinParticipantClient(HttpClient httpClient, ILogger<JustinParticipantClient> logger) : base(httpClient, logger) { }
+        private static readonly Counter _justinQueryCount = Metrics.CreateCounter("jum_webapi_justin_query", "Number of JUSTIN queries");
+
 
         public async Task<Participant> GetParticipantByUserName(string username, string accessToken)
         {
             var result = await this.GetAsync<Party>($"?user_id={username}", accessToken);
-
+            _justinQueryCount.Inc();
             Activity.Current?.AddTag("digitalevidence.justin.user", username);
 
 
@@ -38,6 +41,7 @@ namespace jumwebapi.Infrastructure.HttpClients.JustinParticipant
         {
 
             Activity.Current?.AddTag("digitalevidence.party.id", partId);
+            _justinQueryCount.Inc();
 
             var result = await this.GetAsync<Party>($"?part_id={partId}", accessToken);
 

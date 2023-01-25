@@ -3,6 +3,7 @@ using NodaTime;
 using NotificationService.Data;
 using NotificationService.HttpClients.Mail;
 using NotificationService.NotificationEvents.UserProvisioning.Models;
+using Prometheus;
 using System.Linq.Expressions;
 
 namespace NotificationService.Services;
@@ -17,6 +18,8 @@ public class EmailService : IEmailService
     private readonly ISmtpEmailClient smtpEmailClient;
     private readonly NotificationServiceConfiguration config;
     private readonly NotificationDbContext context;
+    private static readonly Counter _confMessageCount = Metrics.CreateCounter("jum_email_sent_count", "Number of emails sent");
+    private static readonly Counter _confMessageFailCount = Metrics.CreateCounter("jum_email_failure_count", "Number of failed email sends");
 
     public EmailService(
         IChesClient chesClient,
@@ -51,13 +54,18 @@ public class EmailService : IEmailService
              * Query ches status using the tag whenever there's event failure to determine if a message was already sent
              * implementation coming up soon using sage or outbox pattern
              */
+
             await this.CreateEmailLog(email, SendType.Ches, tag!);
             var msgId = await this.chesClient.SendAsync(email);
             await this.UpdateEmailLogMsgId(tag!, msgId);
 
             if (msgId != null)
             {
+                _confMessageCount.Inc();
                 return msgId;
+            } else
+            {
+                _confMessageFailCount.Inc();
             }
         }
 

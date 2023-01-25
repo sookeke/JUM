@@ -4,6 +4,7 @@ using NotificationService.HttpClients.Mail;
 using NotificationService.Kafka.Interfaces;
 using NotificationService.NotificationEvents.UserProvisioning.Models;
 using NotificationService.Services;
+using Prometheus;
 
 namespace NotificationService.NotificationEvents.UserProvisioning.Handler;
 public class UserProvisioningHandler : IKafkaHandler<string, Notification>
@@ -13,6 +14,9 @@ public class UserProvisioningHandler : IKafkaHandler<string, Notification>
     private readonly IEmailService _emailService;
     private readonly NotificationDbContext _context;
     private readonly IChesClient chesClient;
+
+    private static readonly Counter _consumeCount = Metrics.CreateCounter("jum_notify_consume_count", "Number of notification messages consumed");
+    private static readonly Counter _duplicateConsumeCount = Metrics.CreateCounter("jum_notify_dup_consume_count", "Number of duplicated notification messages consumed");
 
     public UserProvisioningHandler(NotificationServiceConfiguration configuration, IKafkaProducer<string, NotificationAckModel> producer, IEmailService emailService, NotificationDbContext context, IChesClient chesClient)
     {
@@ -27,8 +31,13 @@ public class UserProvisioningHandler : IKafkaHandler<string, Notification>
         //check wheather this message has been processed before
         Guid? msgId = Guid.Empty;
 
+        Serilog.Log.Information($"Received message with {key} on consumer {consumerName}");
+        _consumeCount.Inc();
+
         if (await _context.HasBeenProcessed(key, consumerName))
         {
+            Serilog.Log.Information($"Message {key} has already been processed");
+            _duplicateConsumeCount.Inc();
             return Task.CompletedTask;
         }
         //check wheater the message tag has already been processed via ches

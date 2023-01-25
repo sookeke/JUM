@@ -1,4 +1,5 @@
-﻿using Confluent.Kafka;
+﻿using System.Net;
+using Confluent.Kafka;
 using NotificationService.Extensions;
 using NotificationService.Kafka.Interfaces;
 using NotificationService.NotificationEvents;
@@ -34,6 +35,7 @@ public static class ConsumerSetup
             Acks = Acks.All,
             SaslMechanism = SaslMechanism.OAuthBearer,
             SecurityProtocol = SecurityProtocol.SaslSsl,
+            ClientId = Dns.GetHostName(),
             SaslOauthbearerTokenEndpointUrl = config.KafkaCluster.SaslOauthbearerTokenEndpointUrl,
             SaslOauthbearerMethod = SaslOauthbearerMethod.Oidc,
             SaslOauthbearerScope = config.KafkaCluster.Scope,
@@ -52,6 +54,7 @@ public static class ConsumerSetup
         {
             GroupId = config.KafkaCluster.ConsumerGroupId,
             EnableAutoCommit = true,
+            ClientId = Dns.GetHostName(),
             AutoOffsetReset = AutoOffsetReset.Earliest,
             SaslOauthbearerClientId = config.KafkaCluster.SaslOauthbearerConsumerClientId,
             SaslOauthbearerClientSecret = config.KafkaCluster.SaslOauthbearerConsumerClientSecret,

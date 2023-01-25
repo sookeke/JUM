@@ -2,6 +2,7 @@
 using jumwebapi.Data.ef;
 using jumwebapi.Features.DigitalParticipants.Services;
 using MediatR;
+using Prometheus;
 
 namespace jumwebapi.Features.DigitalParticipants.Commands;
 
@@ -11,6 +12,7 @@ public class CreateDigitalParticipantCommandHandler : IRequestHandler<CreateDigi
 {
     private readonly IDigitalParticipantService _digitalParticipantService;
     private readonly IValidator<CreateDigitalParticipantCommand> _validator;
+
     public CreateDigitalParticipantCommandHandler(IDigitalParticipantService digitalParticipantService, IValidator<CreateDigitalParticipantCommand> validator)
     {
         _digitalParticipantService = digitalParticipantService;

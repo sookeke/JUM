@@ -2,6 +2,7 @@
 using jumwebapi.Infrastructure.HttpClients.JustinParticipant;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
+using Prometheus;
 
 namespace jumwebapi.Features.Participants.Queries;
 
@@ -10,6 +11,9 @@ public class GetParticipantByUsername : IRequestHandler<GetParticipantByUsername
 {
     private readonly IJustinParticipantClient _justineParticipantClient;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private static readonly Histogram LookupDuration = Metrics
+    .CreateHistogram("jum_webapi_justin_lookup_duration_seconds", "Historgram of JUSTIN lookup timings");
+
     public GetParticipantByUsername(IJustinParticipantClient justineParticipantClient, IHttpContextAccessor httpContextAccessor)
     {
         _justineParticipantClient = justineParticipantClient;
@@ -19,6 +23,9 @@ public class GetParticipantByUsername : IRequestHandler<GetParticipantByUsername
     public async Task<Participant> Handle(GetParticipantByUsernameQuery request, CancellationToken cancellationToken)
     {
         //var accessToken = await _httpContextAccessor.HttpContext?.GetTokenAsync("access_token");//current part endpoint dont have authrotization
-        return await _justineParticipantClient.GetParticipantByUserName(request?.Username.ToString(), "");
+        using (LookupDuration.NewTimer())
+        {
+            return await _justineParticipantClient.GetParticipantByUserName(request?.Username.ToString(), "");
+        }
     }
 }

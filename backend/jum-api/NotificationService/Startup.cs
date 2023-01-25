@@ -11,6 +11,7 @@ using NotificationService.Services;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using NotificationService.Data;
 using Microsoft.EntityFrameworkCore;
+using Prometheus;
 
 namespace NotificationService;
 public class Startup
@@ -40,7 +41,7 @@ public class Startup
 
         services.AddHealthChecks()
                 .AddCheck("liveliness", () => HealthCheckResult.Healthy())
-                .AddSqlServer(config.ConnectionStrings.JumDatabase, tags: new[] { "services" });
+                .AddSqlServer(config.ConnectionStrings.JumDatabase, tags: new[] { "services" }).ForwardToPrometheus();
 
         services.AddControllers();
         services.AddHttpClient();
@@ -88,8 +89,6 @@ public class Startup
         });
         services.AddFluentValidationRulesToSwagger();
 
-        //services.AddKafkaConsumer(config);
-
     }
     private NotificationServiceConfiguration InitializeConfiguration(IServiceCollection services)
     {
@@ -131,8 +130,10 @@ public class Startup
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
-            // endpoints.MapHealthChecks("/health");
+            endpoints.MapHealthChecks("/health");
         });
-
+        app.UseMetricServer();
+        app.UseHttpMetrics();
     }
+
 }

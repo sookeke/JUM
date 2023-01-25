@@ -43,6 +43,8 @@ using OpenTelemetry.Metrics;
 using Google.Protobuf.WellKnownTypes;
 using Azure.Monitor.OpenTelemetry.Exporter;
 using Microsoft.IdentityModel.Tokens;
+using Prometheus;
+
 
 namespace jumwebapi;
 public class Startup
@@ -163,8 +165,9 @@ public class Startup
 
 
         services.AddHealthChecks()
-            .AddCheck("liveliness", () => HealthCheckResult.Healthy());
-            //.AddSqlServer(config.ConnectionStrings.JumDatabase, tags: new[] { "services" });
+                .AddCheck("liveliness", () => HealthCheckResult.Healthy())
+                .ForwardToPrometheus();
+        //.AddSqlServer(config.ConnectionStrings.JumDatabase, tags: new[] { "services" });
 
         services.AddApiVersioning(options =>
         {
@@ -239,6 +242,11 @@ public class Startup
                 diagnosticContext.Set("User", userId);
             }
         });
+
+
+        app.UseMetricServer();
+        app.UseHttpMetrics();
+
         app.UseRouting();
         app.UseCors("CorsPolicy");
         app.UseAuthentication();
@@ -248,6 +256,7 @@ public class Startup
             endpoints.MapControllers();
             endpoints.MapHealthChecks("/health");
         });
+
 
     }
 }
