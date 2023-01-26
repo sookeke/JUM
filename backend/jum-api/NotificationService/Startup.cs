@@ -97,7 +97,7 @@ public class Startup
         services.AddSingleton(config);
 
         Log.Logger.Information("### App Version:{0} ###", Assembly.GetExecutingAssembly().GetName().Version);
-        Log.Logger.Information("### X Notification Service Configuration:{0} ###", JsonSerializer.Serialize(config));
+        Log.Logger.Information("### Notification Service Configuration:{0} ###", JsonSerializer.Serialize(config));
 
 
 
@@ -123,6 +123,11 @@ public class Startup
             //    diagnosticContext.Set("User", userId);
             //}
         });
+
+        app.UseMetricServer();
+        app.UseHttpMetrics();
+
+
         app.UseRouting();
         app.UseCors("CorsPolicy");
         app.UseAuthentication();
@@ -130,10 +135,10 @@ public class Startup
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
+            endpoints.MapMetrics();
             endpoints.MapHealthChecks("/health");
         });
-        app.UseMetricServer();
-        app.UseHttpMetrics();
+ 
     }
 
 }

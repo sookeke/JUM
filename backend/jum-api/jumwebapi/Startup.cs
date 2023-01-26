@@ -46,6 +46,7 @@ using Microsoft.IdentityModel.Tokens;
 using Prometheus;
 
 
+
 namespace jumwebapi;
 public class Startup
 {
@@ -167,6 +168,7 @@ public class Startup
         services.AddHealthChecks()
                 .AddCheck("liveliness", () => HealthCheckResult.Healthy())
                 .ForwardToPrometheus();
+
         //.AddSqlServer(config.ConnectionStrings.JumDatabase, tags: new[] { "services" });
 
         services.AddApiVersioning(options =>
@@ -254,8 +256,10 @@ public class Startup
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
+            endpoints.MapMetrics();
             endpoints.MapHealthChecks("/health");
         });
+
 
 
     }
