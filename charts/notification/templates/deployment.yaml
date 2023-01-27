@@ -52,6 +52,16 @@ spec:
                 secretKeyRef:
                   name: jum-kafka-config-notification
                   key: KafkaCluster__SaslOauthbearerTokenEndpointUrl
+            - name: KafkaCluster__SaslOauthbearerProducerClientId
+              valueFrom:
+                secretKeyRef:
+                  name: jum-kafka-config-notification
+                  key: KafkaCluster__ProducerClientId
+            - name: KafkaCluster__SaslOauthbearerConsumerClientId
+              valueFrom:
+                secretKeyRef:
+                  name: jum-kafka-config-notification
+                  key: KafkaCluster__ConsumerClientId
             - name: KafkaCluster__BootstrapServers
               valueFrom:
                 secretKeyRef:
